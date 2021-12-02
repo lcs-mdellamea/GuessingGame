@@ -15,6 +15,12 @@ struct ContentView: View {
     @State var currentGuess: Double = 50.0
     
     //MARK: Computed Properties
+    // The target that we are trying to guess.
+    // THis will produce an integer in the range 1 to 100, inclusive
+    
+    let target = Int.random(in: 1...100)
+    
+    @State var feedback = "" // No hint to start the game.
     
     var body: some View {
         
@@ -40,12 +46,42 @@ struct ContentView: View {
                 .bold()
             
             Button(action: {
-                // NOTE: Output will not be shown unless this app is run in the "full" simulator
-                print("Button was pressed")
+              
+                // Make the user's guess into an integer.
+                
+            //  BAD EXAMPLE: let cgaai = Int(currentGuess)
+                
+                // Why? - Hard to remember (confusing)
+                
+                let currentGuessAsAnInteger = Int(currentGuess)
+                
+                // Compare the user's current guess to the target.
+                
+                if currentGuessAsAnInteger < target {
+                    
+                    feedback = "Guess higher next time!"
+                    
+                } else if currentGuessAsAnInteger > target {
+                    
+                    feedback = "Guess lower next time!"
+                    
+                } else { // if currentGuessAsAnInteger == target {
+                    
+                    feedback = "You Got It!"
+                // }
+                }
+                
             }, label: {
                 Text("Submit Guess")
             })
             .buttonStyle(.bordered)
+            
+            Text("The super secret target is \(target)")
+                .padding()
+            
+            Text(feedback)
+                .italic()
+                .padding()
             
             Spacer()
         }
